@@ -1,0 +1,11 @@
+- Đối tượng.
+- Lớp.
+- Tính đóng gói
+    - default:  cho phép truy cập bên trong cùng package.
+    - public:   cho phép truy cập ở tất cả mọi nơi.
+    - protected:cho phép truy cập bên trong cùng package,
+                    truy cập từ các class con.
+    - private:  cho phép truy cập bên trong nội bộ class.
+- Kế thừa:
+    - Lớp con được kế thừa phương thức, thuộc tính của lớp cha.
+    - Lớp con được kế thừa kiểu dữ liệu của lớp cha.
