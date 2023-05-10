@@ -10,4 +10,18 @@ public class Acer extends Laptop {
 //        this.nsx = "Acer";
 //        this.namBaoHanh = 4;
     }
+    
+    @Override
+    public void xuatThongTin()
+    {
+        System.out.println("Máy tính Acer");
+        super.xuatThongTin();
+    }
+    
+    // Overload
+    public void xuatThongTin(String chip)
+    {
+        this.xuatThongTin();
+        System.out.println(chip);
+    }
 }

@@ -9,3 +9,10 @@
 - Kế thừa:
     - Lớp con được kế thừa phương thức, thuộc tính của lớp cha.
     - Lớp con được kế thừa kiểu dữ liệu của lớp cha.
+
+- Trừu tượng (Interface):
+    - Interface chỉ khai báo các hàm, KHÔNG CÓ định nghĩa thân hàm.
+    - Khi Class thực thi Interface, class phải
+        triển khai toàn bộ các hàm được khai báo trong Interface.
+    - Khi Class thực thi Interface, đối tượng của class đó
+        được phép có kiểu của Interface

@@ -15,6 +15,14 @@ public class Laptop {
         this.nsx = nsx;
         this.namBaoHanh = namBaoHanh;
     }
+    
+    public void xuatThongTin()
+    {
+        System.out.println("Ten: " + this.ten);
+        System.out.println("Gia: " + this.gia);
+        System.out.println("NSX: " + this.nsx);
+        System.out.println("Nam BH: " + this.namBaoHanh);
+    }
 
     public String getTen() {
         return ten;

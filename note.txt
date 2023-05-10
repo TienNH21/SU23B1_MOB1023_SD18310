@@ -1,0 +1,12 @@
+- Đóng gói:
+    - default: chỉ cho phép truy xuất trong cùng package.
+    - public: cho phép truy xuất ở tất cả mọi nơi.
+    - protected: cho phép truy xuất trong cùng package và các class con.
+    - private: chỉ cho phép truy xuất trong cùng class.
+
+- Kế thừa:
+    - Class con kế thừa Class cha, lớp con được thừa hưởng toàn bộ
+        các thuộc tính và phương thức của lớp cha;
+        NHƯNG chỉ được phép truy cập tới những thành phần KHÔNG private.
+    - Lớp con kế thừa lớp cha, được thừa hưởng cả kiểu dữ liệu của lớp cha.
+        Đối tượng của lớp con được phép có kiểu của lớp cha.
