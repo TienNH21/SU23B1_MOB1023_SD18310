@@ -9,23 +9,26 @@ public class QLSVFrame extends javax.swing.JFrame {
     public QLSVFrame() {
         initComponents();
         
-        /*
-         * YC1. Khi click nút THÊM, đọc dữ liệu từ form
-         *    -> tạo thành đối tượng SinhVien
-         *    -> thêm vào ArrayList
-         *
-         * YC2: Xây dựng hàm loadTable(), duyệt ArrayList và
-         *    hiển thị dữ liệu lên JTable
-         *
-         */
+        this.listSV.add(new SinhVien("PH1", "Ng Van A", "anvph1@fpt.edu.vn", "1", 1, 1, "PTPM.Java"));
+        this.listSV.add(new SinhVien("PH2", "Ng Thi B", "bntph2@fpt.edu.vn", "2", 0, 1, "TKTW.BE"));
+        this.listSV.add(new SinhVien("PH3", "Tran Van C", "ctvph3@fpt.edu.vn", "4", 1, 1, "PTPM.Java"));
+        this.loadTable();
     }
-    
+
     private void loadTable()
     {
-        DefaultTableModel dtm =
-            (DefaultTableModel) this.tblSV.getModel();
+        DefaultTableModel dtm = (DefaultTableModel) this.tblSV.getModel();
+        dtm.setRowCount(0); // Xóa các dữ liệu cũ trên JTable
         for (SinhVien sv : listSV) {
-            
+            Object[] rowData = {
+                sv.getMa(),
+                sv.getTen(),
+                sv.getEmail(),
+                sv.getGioiTinh(),
+                sv.getTrangThai(),
+                sv.getcNganh(),
+            };
+            dtm.addRow(rowData);
         }
     }
 
@@ -104,8 +107,18 @@ public class QLSVFrame extends javax.swing.JFrame {
         });
 
         btnSua.setText("Sửa");
+        btnSua.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSuaActionPerformed(evt);
+            }
+        });
 
         btnXoa.setText("Xóa");
+        btnXoa.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnXoaActionPerformed(evt);
+            }
+        });
 
         btnClear.setText("Clear");
         btnClear.addActionListener(new java.awt.event.ActionListener() {
@@ -217,6 +230,11 @@ public class QLSVFrame extends javax.swing.JFrame {
                 "Mã SV", "Họ tên", "Email", "Giới tính", "Trạng thái", "C/Ngành"
             }
         ));
+        tblSV.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblSVMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(tblSV);
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
@@ -269,29 +287,13 @@ public class QLSVFrame extends javax.swing.JFrame {
         String ten = this.txtHoTen.getText();
         String email = this.txtEmail.getText();
         String pwd = String.valueOf(this.txtPwd.getPassword());        
-        String gt = this.rdoNam.isSelected() ? "Nam" : "Nu";
-        String status = this.ckbStatus.isSelected() ?
-            "Đang học" : "Bảo lưu";
-        
+        int gioiTinh = this.rdoNam.isSelected() ? 1 : 0;
+        int trangThai = this.ckbStatus.isSelected() ? 1 : 0;
+
         String cNganh = this.cbbCNganh.getSelectedItem().toString();
-        System.out.println(
-            ma + "|" + ten + "|" + email + "|" +
-            pwd + "|" + gt + "|" + status + "|" + cNganh
-        );
-        
-        DefaultTableModel dtm =
-            (DefaultTableModel) this.tblSV.getModel();
-        
-        Object[] rowData = {
-            ma,
-            ten,
-            email,
-            gt,
-            status,
-            cNganh
-        };
-        
-        dtm.addRow(rowData);
+        SinhVien sv = new SinhVien(ma, ten, email, pwd, gioiTinh, trangThai, cNganh);
+        this.listSV.add(sv);
+        this.loadTable();
     }//GEN-LAST:event_btnThemActionPerformed
 
     private void btnClearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnClearActionPerformed
@@ -304,6 +306,63 @@ public class QLSVFrame extends javax.swing.JFrame {
         this.cbbCNganh.setSelectedIndex(0);
         
     }//GEN-LAST:event_btnClearActionPerformed
+
+    private void btnXoaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnXoaActionPerformed
+        int row = this.tblSV.getSelectedRow();
+        if (row == -1) {
+            return ;
+        }
+        
+        this.listSV.remove(row);
+        this.loadTable();
+    }//GEN-LAST:event_btnXoaActionPerformed
+
+    private void btnSuaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSuaActionPerformed
+        // Lấy ra dòng được chọn trên JTable
+        int row = this.tblSV.getSelectedRow();
+        if (row == -1) {
+            return ;
+        }
+        
+        String ma = this.txtMaSV.getText();
+        String ten = this.txtHoTen.getText();
+        String email = this.txtEmail.getText();
+        String pwd = String.valueOf(this.txtPwd.getPassword());        
+        int gioiTinh = this.rdoNam.isSelected() ? 1 : 0;
+        int trangThai = this.ckbStatus.isSelected() ? 1 : 0;
+
+        String cNganh = this.cbbCNganh.getSelectedItem().toString();
+        SinhVien sv = new SinhVien(ma, ten, email, pwd, gioiTinh, trangThai, cNganh);
+        this.listSV.set(row, sv);
+        this.loadTable();
+    }//GEN-LAST:event_btnSuaActionPerformed
+
+    private void tblSVMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblSVMouseClicked
+        // Lấy ra dòng được chọn trên JTable
+        int row = this.tblSV.getSelectedRow();
+        if (row == -1) {
+            return ;
+        }
+        
+        // Lấy ra phần tử trong List tương ứng với dòng được trên Table 
+        SinhVien sv = this.listSV.get(row);
+        
+        // Gán các giá trị của object lên form.
+        this.txtMaSV.setText( sv.getMa() );
+        this.txtHoTen.setText( sv.getTen());
+        this.txtEmail.setText( sv.getEmail());
+        this.txtPwd.setText( sv.getPwd());
+        
+        if (sv.getGioiTinh() == 1) {
+            this.rdoNam.setSelected(true);
+        } else {
+            this.rdoNu.setSelected(true);
+        }
+        
+        boolean stt = sv.getTrangThai() == 1 ? true : false;
+        this.ckbStatus.setSelected(stt);
+        this.cbbCNganh.setSelectedItem(sv.getcNganh());
+    }//GEN-LAST:event_tblSVMouseClicked
 
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
