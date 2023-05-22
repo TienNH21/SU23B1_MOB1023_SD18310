@@ -2,7 +2,7 @@ package lesson2_interface;
 
 public class MainClass {
     public static void main(String[] args) {
-//        Animal c = new Cat();
+        Animal c1 = new Cat();
         Cat c = new Cat();
         Dog d = new Dog();
         Chicken ga = new Chicken();
