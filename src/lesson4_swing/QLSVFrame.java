@@ -4,14 +4,16 @@ import java.util.ArrayList;
 import javax.swing.table.DefaultTableModel;
 
 public class QLSVFrame extends javax.swing.JFrame {
-    private ArrayList<SinhVien> listSV = new ArrayList<>();
+    private SinhVienService svService;
 
     public QLSVFrame() {
         initComponents();
         
-        this.listSV.add(new SinhVien("PH1", "Ng Van A", "anvph1@fpt.edu.vn", "1", 1, 1, "PTPM.Java"));
-        this.listSV.add(new SinhVien("PH2", "Ng Thi B", "bntph2@fpt.edu.vn", "2", 0, 1, "TKTW.BE"));
-        this.listSV.add(new SinhVien("PH3", "Tran Van C", "ctvph3@fpt.edu.vn", "4", 1, 1, "PTPM.Java"));
+        this.svService = new SinhVienService();
+        
+        this.svService.insert(new SinhVien("PH1", "Ng Van A", "anvph1@fpt.edu.vn", "1", 1, 1, "PTPM.Java"));
+        this.svService.insert(new SinhVien("PH2", "Ng Thi B", "bntph2@fpt.edu.vn", "2", 0, 1, "TKTW.BE"));
+        this.svService.insert(new SinhVien("PH3", "Tran Van C", "ctvph3@fpt.edu.vn", "4", 1, 1, "PTPM.Java"));
         this.loadTable();
     }
 
@@ -19,7 +21,7 @@ public class QLSVFrame extends javax.swing.JFrame {
     {
         DefaultTableModel dtm = (DefaultTableModel) this.tblSV.getModel();
         dtm.setRowCount(0); // Xóa các dữ liệu cũ trên JTable
-        for (SinhVien sv : listSV) {
+        for (SinhVien sv : this.svService.getListSv()) {
             Object[] rowData = {
                 sv.getMa(),
                 sv.getTen(),
@@ -292,7 +294,7 @@ public class QLSVFrame extends javax.swing.JFrame {
 
         String cNganh = this.cbbCNganh.getSelectedItem().toString();
         SinhVien sv = new SinhVien(ma, ten, email, pwd, gioiTinh, trangThai, cNganh);
-        this.listSV.add(sv);
+        this.svService.insert(sv);
         this.loadTable();
     }//GEN-LAST:event_btnThemActionPerformed
 
@@ -313,7 +315,7 @@ public class QLSVFrame extends javax.swing.JFrame {
             return ;
         }
         
-        this.listSV.remove(row);
+        this.svService.delete(row);
         this.loadTable();
     }//GEN-LAST:event_btnXoaActionPerformed
 
@@ -333,7 +335,7 @@ public class QLSVFrame extends javax.swing.JFrame {
 
         String cNganh = this.cbbCNganh.getSelectedItem().toString();
         SinhVien sv = new SinhVien(ma, ten, email, pwd, gioiTinh, trangThai, cNganh);
-        this.listSV.set(row, sv);
+        this.svService.update(row, sv);
         this.loadTable();
     }//GEN-LAST:event_btnSuaActionPerformed
 
@@ -345,7 +347,7 @@ public class QLSVFrame extends javax.swing.JFrame {
         }
         
         // Lấy ra phần tử trong List tương ứng với dòng được trên Table 
-        SinhVien sv = this.listSV.get(row);
+        SinhVien sv = this.svService.getListSv().get(row);
         
         // Gán các giá trị của object lên form.
         this.txtMaSV.setText( sv.getMa() );
