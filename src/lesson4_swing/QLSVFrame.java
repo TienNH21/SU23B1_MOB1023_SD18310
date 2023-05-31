@@ -1,10 +1,21 @@
 package lesson4_swing;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 public class QLSVFrame extends javax.swing.JFrame {
     private SinhVienService svService;
+    private String filename = "qlsv.dat";
 
     public QLSVFrame() {
         initComponents();
@@ -60,6 +71,8 @@ public class QLSVFrame extends javax.swing.JFrame {
         btnXoa = new javax.swing.JButton();
         btnClear = new javax.swing.JButton();
         btnExit = new javax.swing.JButton();
+        btnDocFile = new javax.swing.JButton();
+        btnGhiFile = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblSV = new javax.swing.JTable();
@@ -136,6 +149,20 @@ public class QLSVFrame extends javax.swing.JFrame {
             }
         });
 
+        btnDocFile.setText("Đọc file");
+        btnDocFile.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDocFileActionPerformed(evt);
+            }
+        });
+
+        btnGhiFile.setText("Ghi file");
+        btnGhiFile.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnGhiFileActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -183,7 +210,11 @@ public class QLSVFrame extends javax.swing.JFrame {
                         .addGap(18, 18, 18)
                         .addComponent(btnClear)
                         .addGap(18, 18, 18)
-                        .addComponent(btnExit)))
+                        .addComponent(btnExit))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(btnDocFile)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnGhiFile)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -219,7 +250,11 @@ public class QLSVFrame extends javax.swing.JFrame {
                     .addComponent(btnXoa)
                     .addComponent(btnClear)
                     .addComponent(btnExit))
-                .addContainerGap(57, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnDocFile)
+                    .addComponent(btnGhiFile))
+                .addContainerGap(16, Short.MAX_VALUE))
         );
 
         jPanel2.setBackground(new java.awt.Color(51, 255, 255));
@@ -366,6 +401,54 @@ public class QLSVFrame extends javax.swing.JFrame {
         this.cbbCNganh.setSelectedItem(sv.getcNganh());
     }//GEN-LAST:event_tblSVMouseClicked
 
+    private void btnGhiFileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGhiFileActionPerformed
+        ArrayList<SinhVien> ds = this.svService.getListSv();
+
+        File f = new File(filename);
+        if (f.exists() == false) {
+            System.out.println("File không tồn tại");
+            return ;
+        }
+        
+        try {
+            FileOutputStream fos = new FileOutputStream(f);
+            ObjectOutputStream oos = new ObjectOutputStream(fos);
+            oos.writeObject(ds);
+            oos.close();
+            JOptionPane.showMessageDialog(this, "Ghi file thành công");
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Ghi file thất bại");
+        } catch (IOException e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Ghi file thất bại");
+        }
+    }//GEN-LAST:event_btnGhiFileActionPerformed
+
+    private void btnDocFileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDocFileActionPerformed
+        File f = new File(filename);
+        if (f.exists() == false) {
+            System.out.println("File không tồn tại");
+            return ;
+        }
+        
+        try {
+            FileInputStream fis = new FileInputStream(f);
+            ObjectInputStream ois = new ObjectInputStream(fis);
+            ArrayList<SinhVien> ds = (ArrayList<SinhVien>) ois.readObject();
+            ois.close();
+            
+            this.svService.setListSv(ds);
+            this.loadTable();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+    }//GEN-LAST:event_btnDocFileActionPerformed
+
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -400,7 +483,9 @@ public class QLSVFrame extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnClear;
+    private javax.swing.JButton btnDocFile;
     private javax.swing.JButton btnExit;
+    private javax.swing.JButton btnGhiFile;
     private javax.swing.JButton btnSua;
     private javax.swing.JButton btnThem;
     private javax.swing.JButton btnXoa;

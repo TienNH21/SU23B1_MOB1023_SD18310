@@ -1,6 +1,8 @@
 package lesson4_swing;
 
-public class SinhVien {
+import java.io.Serializable;
+
+public class SinhVien implements Serializable {
     private String ma;
     private String ten;
     private String email;
